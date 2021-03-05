@@ -17,7 +17,7 @@ def Import_jcr(bd, jcr):
     con = sqlite3.connect(bd)
     cursorObj = con.cursor()
     for row in JCR.itertuples():
-        sql = "INSERT OR IGNORE INTO JCR(year, ISSN, ids,  ISI, MC, PD, TD, PC, TC, idra, MD) VALUES(?, ?, (select ids from Sources where SN = ? or EI = ? or EIB = ? or IB = ?),?,?,?,?,?,?,(select idc from Categories where upper(WC) = upper(?)),?)"
+        sql = "INSERT OR IGNORE INTO JCR(year, ISSN, ids,  ISI, MC, PD, TD, PC, TC, idc, MD) VALUES(?, ?, (select ids from Sources where SN = ? or EI = ? or EIB = ? or IB = ?),?,?,?,?,?,?,(select idc from Categories where upper(WC) = upper(?)),?)"
         cursorObj.execute(sql, (row[1], row[2], row[2], row[2], row[2], row[2], row[3], row[4], row[6], row[7], row[8], row[9], row[5],row[5]))
     con.commit()
 

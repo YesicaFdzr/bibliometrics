@@ -212,22 +212,22 @@ def Parse_Categories(tree, bd):
 
     print('Recogiendo información de las categorias...')
     for item in tree.iterfind('REC'):
-        if item.find('.//static_data/fullrecord_metadata/category_info/headings/heading') is not None:
-            Category = item.find('.//static_data/fullrecord_metadata/category_info/headings/heading').text
-        else:
-            Category = None
-        rows_categories.append({"Category": Category})
+        for a in item.iterfind('.//static_data/fullrecord_metadata/category_info/subjects/subject[@ascatype="traditional"]'):
+            Category = a.text
+            rows_categories.append({"Category": Category})
+    
+    Categories = pd.DataFrame(rows_categories, columns=df_cols_categories)
+    Categories = Categories.drop_duplicates()
+
 
     for item in tree.iterfind('REC'):
         UT = item.find('.//UID').text[4:]
-        if item.find('.//static_data/fullrecord_metadata/category_info/headings/heading') is not None:
-            Category = item.find('.//static_data/fullrecord_metadata/category_info/headings/heading').text
-        else:
-            Category = None
-        rows_docs_categories.append({"UT": UT, "Category": Category}) 
-    Categories = pd.DataFrame(rows_categories, columns=df_cols_categories)
-    Categories = Categories.drop_duplicates()
+        for a in item.iterfind('.//static_data/fullrecord_metadata/category_info/subjects/subject[@ascatype="traditional"]'):
+            category = a.text
+            rows_docs_categories.append({"UT": UT, "Category": category})
+
     Docs_categories = pd.DataFrame(rows_docs_categories, columns=df_cols_docs_categories)
+
     print('Información de las categorias recogida, añadiendo información a bd...')
 
     con = sqlite3.connect(bd)
@@ -252,7 +252,7 @@ def Parse_areas(tree, bd):
 
     print('Recogiendo información de las areas...')
     for item in tree.iterfind('REC'):
-        for a in item.iterfind('.//static_data/fullrecord_metadata/category_info/subjects/subject[@ascatype="traditional"]'):
+        for a in item.iterfind('.//static_data/fullrecord_metadata/category_info/subjects/subject[@ascatype="extended"]'):
             area = a.text
             rows_areas.append({"Area": area})
     Areas = pd.DataFrame(rows_areas, columns=df_cols_areas)
@@ -260,7 +260,7 @@ def Parse_areas(tree, bd):
 
     for item in tree.iterfind('REC'):
         UT = item.find('.//UID').text[4:]
-        for a in item.iterfind('.//static_data/fullrecord_metadata/category_info/subjects/subject[@ascatype="traditional"]'):
+        for a in item.iterfind('.//static_data/fullrecord_metadata/category_info/subjects/subject[@ascatype="extended"]'):
             area = a.text
             rows_docs_areas.append({"UT": UT, "Area": area})     
     Docs_areas = pd.DataFrame(rows_docs_areas, columns=df_cols_docs_areas)
