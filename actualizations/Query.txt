@@ -1,0 +1,1 @@
+OG = ("Universidade da Coruna" OR "University of Santiago de Compostela" OR "Universidade de Vigo") AND PY = (2010)
