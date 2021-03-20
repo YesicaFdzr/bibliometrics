@@ -74,7 +74,7 @@ def Create_BD(bd):
     print('Creación de la tabla Editions...')
 
     #Creación de la tabla JCR
-    sql = "CREATE TABLE JCR(year int, issn text, ids int, ISI text, MC text, PD int, TD int, PC int, TC int, idc int, MD text, PRIMARY KEY(year, ISSN), FOREIGN KEY(idc) REFERENCES Categories(idc), FOREIGN KEY(ids) REFERENCES Sources(ids))"
+    sql = "CREATE TABLE JCR(year int, issn text, ids int, ISI text, FI float, MC text, PD int, TD int, PC int, TC int, idc int, MD text, PRIMARY KEY(year, ISSN), FOREIGN KEY(idc) REFERENCES Categories(idc), FOREIGN KEY(ids) REFERENCES Sources(ids))"
     cursorObj.execute(sql)
     con.commit()
     print('Creación de la tabla JCR...')
